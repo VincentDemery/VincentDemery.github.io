@@ -1,0 +1,130 @@
+<embed>
+<head>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
+</head>
+<body>
+	<div id="map" align="center" style="width: 100%; height: 100%"></div>
+
+	<script>
+		var map = L.map('map').setView([50.0, 12], 6);
+
+
+		L.tileLayer('http://tile.opentopomap.org/{z}/{x}/{y}.png', {
+			maxZoom: 15,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, <a href="http://wiki.openstreetmap.org/wiki/OpenTopoMap">OpenTopoMap</a> tiles',
+		}).addTo(map);
+		
+		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			minZoom: 16,
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+		
+		
+	function fun_myIcon(color) {
+        var markerHtmlStyles = `
+          background-color: ${color};
+          width: 1.5rem;
+          height: 1.5rem;
+          display: block;
+          left: -0.75rem;
+          top: -0.75rem;
+          position: relative;
+          border-radius: 1.5rem 1.5rem 0;
+          transform: rotate(45deg);
+          border: 1px solid #FFFFFF`
+
+        var myIcon = L.divIcon({
+          className: "my-custom-pin",
+          iconAnchor: [0, 12],
+          labelAnchor: [-3, 0],
+          popupAnchor: [0, -18],
+          html: `<span style="${markerHtmlStyles}" />`
+        })
+        
+        return myIcon
+    }
+	L.marker([47.86072,5.32891], {icon: fun_myIcon('#3232ff')}).addTo(map).bindPopup("<b>mercredi 17 mai 2023</b>");
+	L.marker([48.17228,5.55634], {icon: fun_myIcon('#3131fc')}).addTo(map).bindPopup("<b>jeudi 18 mai 2023</b>");
+	L.marker([48.44459,5.67593], {icon: fun_myIcon('#3030fa')}).addTo(map).bindPopup("<b>vendredi 19 mai 2023</b>");
+	L.marker([48.90131,5.53944], {icon: fun_myIcon('#2f2ff8')}).addTo(map).bindPopup("<b>samedi 20 mai 2023</b>");
+	L.marker([49.38137,5.18216], {icon: fun_myIcon('#2f2ff6')}).addTo(map).bindPopup("<b>dimanche 21 mai 2023</b>");
+	L.marker([49.65958,5.05017], {icon: fun_myIcon('#2e2ef4')}).addTo(map).bindPopup("<b>lundi 22 mai 2023</b>");
+	L.marker([49.87772,4.74111], {icon: fun_myIcon('#2d2df2')}).addTo(map).bindPopup("<b>mardi 23 mai 2023</b>");
+	L.marker([50.13143,4.80977], {icon: fun_myIcon('#2d2df0')}).addTo(map).bindPopup("<b>mercredi 24 mai 2023</b>");
+	L.marker([50.46841,4.86273], {icon: fun_myIcon('#2c2cee')}).addTo(map).bindPopup("<b>jeudi 25 mai 2023</b>");
+	L.marker([50.64619,5.56862], {icon: fun_myIcon('#2b2bec')}).addTo(map).bindPopup("<b>vendredi 26 mai 2023</b>");
+	L.marker([50.91065,5.73755], {icon: fun_myIcon('#2b2bea')}).addTo(map).bindPopup("<b>samedi 27 mai 2023</b>");
+	L.marker([51.23001,6.01403], {icon: fun_myIcon('#2a2ae7')}).addTo(map).bindPopup("<b>dimanche 28 mai 2023</b>");
+	L.marker([51.53111,6.11837], {icon: fun_myIcon('#2929e5')}).addTo(map).bindPopup("<b>lundi 29 mai 2023</b>");
+	L.marker([51.81632,5.61913], {icon: fun_myIcon('#2929e3')}).addTo(map).bindPopup("<b>mardi 30 mai 2023</b>");
+	L.marker([51.77702,5.13201], {icon: fun_myIcon('#2828e1')}).addTo(map).bindPopup("<b>mercredi 31 mai 2023</b>");
+	L.marker([51.80845,4.72143], {icon: fun_myIcon('#2727df')}).addTo(map).bindPopup("<b>jeudi 1 juin 2023</b>");
+	L.marker([51.90611,4.17846], {icon: fun_myIcon('#2727dd')}).addTo(map).bindPopup("<b>vendredi 2 juin 2023</b>");
+	L.marker([52.11064,4.34640], {icon: fun_myIcon('#2626db')}).addTo(map).bindPopup("<b>samedi 3 juin 2023</b>");
+	L.marker([52.49437,4.60380], {icon: fun_myIcon('#2525d9')}).addTo(map).bindPopup("<b>dimanche 4 juin 2023</b>");
+	L.marker([52.84077,4.71903], {icon: fun_myIcon('#2525d7')}).addTo(map).bindPopup("<b>lundi 5 juin 2023</b>");
+	L.marker([52.88887,4.91985], {icon: fun_myIcon('#2424d5')}).addTo(map).bindPopup("<b>mardi 6 juin 2023</b>");
+	L.marker([53.30672,5.65622], {icon: fun_myIcon('#2323d3')}).addTo(map).bindPopup("<b>mercredi 7 juin 2023</b>");
+	L.marker([53.34868,6.30816], {icon: fun_myIcon('#2323d0')}).addTo(map).bindPopup("<b>jeudi 8 juin 2023</b>");
+	L.marker([53.38102,6.86506], {icon: fun_myIcon('#2222ce')}).addTo(map).bindPopup("<b>vendredi 9 juin 2023</b>");
+	L.marker([53.22343,7.42031], {icon: fun_myIcon('#2121cc')}).addTo(map).bindPopup("<b>samedi 10 juin 2023</b>");
+	L.marker([53.42064,7.01578], {icon: fun_myIcon('#2121ca')}).addTo(map).bindPopup("<b>dimanche 11 juin 2023</b>");
+	L.marker([53.60440,7.13772], {icon: fun_myIcon('#2020c8')}).addTo(map).bindPopup("<b>lundi 12 juin 2023</b>");
+	L.marker([53.69837,7.80542], {icon: fun_myIcon('#1f1fc6')}).addTo(map).bindPopup("<b>mardi 13 juin 2023</b>");
+	L.marker([53.44971,8.13154], {icon: fun_myIcon('#1f1fc4')}).addTo(map).bindPopup("<b>mercredi 14 juin 2023</b>");
+	L.marker([53.59773,8.35719], {icon: fun_myIcon('#1e1ec2')}).addTo(map).bindPopup("<b>jeudi 15 juin 2023</b>");
+	L.marker([53.88537,8.64069], {icon: fun_myIcon('#1d1dc0')}).addTo(map).bindPopup("<b>vendredi 16 juin 2023</b>");
+	L.marker([53.75211,9.08139], {icon: fun_myIcon('#1d1dbe')}).addTo(map).bindPopup("<b>samedi 17 juin 2023</b>");
+	L.marker([53.54168,9.61463], {icon: fun_myIcon('#1c1cbb')}).addTo(map).bindPopup("<b>dimanche 18 juin 2023</b>");
+	L.marker([53.55677,10.00415], {icon: fun_myIcon('#1b1bb9')}).addTo(map).bindPopup("<b>lundi 19 juin 2023</b>");
+	L.marker([53.72368,9.50247], {icon: fun_myIcon('#1a1ab5')}).addTo(map).bindPopup("<b>mercredi 21 juin 2023</b>");
+	L.marker([53.97704,9.14513], {icon: fun_myIcon('#1919b3')}).addTo(map).bindPopup("<b>jeudi 22 juin 2023</b>");
+	L.marker([54.28501,8.66088], {icon: fun_myIcon('#1919b1')}).addTo(map).bindPopup("<b>vendredi 23 juin 2023</b>");
+	L.marker([54.45487,8.97156], {icon: fun_myIcon('#1818af')}).addTo(map).bindPopup("<b>samedi 24 juin 2023</b>");
+	L.marker([54.71523,8.74688], {icon: fun_myIcon('#1717ad')}).addTo(map).bindPopup("<b>dimanche 25 juin 2023</b>");
+	L.marker([55.06819,8.66072], {icon: fun_myIcon('#1616ab')}).addTo(map).bindPopup("<b>lundi 26 juin 2023</b>");
+	L.marker([55.43442,8.64127], {icon: fun_myIcon('#1616a9')}).addTo(map).bindPopup("<b>mardi 27 juin 2023</b>");
+	L.marker([55.81438,8.19973], {icon: fun_myIcon('#1515a7')}).addTo(map).bindPopup("<b>mercredi 28 juin 2023</b>");
+	L.marker([56.25941,8.14588], {icon: fun_myIcon('#1414a4')}).addTo(map).bindPopup("<b>jeudi 29 juin 2023</b>");
+	L.marker([56.69464,8.20619], {icon: fun_myIcon('#1414a2')}).addTo(map).bindPopup("<b>vendredi 30 juin 2023</b>");
+	L.marker([57.03497,8.48160], {icon: fun_myIcon('#1313a0')}).addTo(map).bindPopup("<b>samedi 1 juil. 2023</b>");
+	L.marker([57.13393,9.17558], {icon: fun_myIcon('#12129e')}).addTo(map).bindPopup("<b>dimanche 2 juil. 2023</b>");
+	L.marker([57.42057,9.76066], {icon: fun_myIcon('#12129c')}).addTo(map).bindPopup("<b>lundi 3 juil. 2023</b>");
+	L.marker([57.58490,10.25051], {icon: fun_myIcon('#11119a')}).addTo(map).bindPopup("<b>mardi 4 juil. 2023</b>");
+	L.marker([57.72151,10.56034], {icon: fun_myIcon('#101096')}).addTo(map).bindPopup("<b>jeudi 6 juil. 2023</b>");
+	L.marker([57.74676,10.65495], {icon: fun_myIcon('#0f0f94')}).addTo(map).bindPopup("<b>vendredi 7 juil. 2023</b>");
+	L.marker([54.79934,9.40762], {icon: fun_myIcon('#0e0e92')}).addTo(map).bindPopup("<b>samedi 8 juil. 2023</b>");
+	L.marker([55.67985,12.59136], {icon: fun_myIcon('#0e0e8f')}).addTo(map).bindPopup("<b>dimanche 9 juil. 2023</b>");
+	L.marker([55.34176,12.40367], {icon: fun_myIcon('#0c0c8b')}).addTo(map).bindPopup("<b>mardi 11 juil. 2023</b>");
+	L.marker([55.22278,12.17809], {icon: fun_myIcon('#0c0c89')}).addTo(map).bindPopup("<b>mercredi 12 juil. 2023</b>");
+	L.marker([54.97903,12.52075], {icon: fun_myIcon('#0b0b87')}).addTo(map).bindPopup("<b>jeudi 13 juil. 2023</b>");
+	L.marker([54.89060,12.02704], {icon: fun_myIcon('#0a0a85')}).addTo(map).bindPopup("<b>vendredi 14 juil. 2023</b>");
+	L.marker([54.65607,11.95907], {icon: fun_myIcon('#0a0a83')}).addTo(map).bindPopup("<b>samedi 15 juil. 2023</b>");
+	L.marker([53.85297,11.98324], {icon: fun_myIcon('#090981')}).addTo(map).bindPopup("<b>dimanche 16 juil. 2023</b>");
+	L.marker([53.66978,12.27490], {icon: fun_myIcon('#08087f')}).addTo(map).bindPopup("<b>lundi 17 juil. 2023</b>");
+	L.marker([53.49939,12.66297], {icon: fun_myIcon('#08087d')}).addTo(map).bindPopup("<b>mardi 18 juil. 2023</b>");
+	L.marker([53.31707,12.94364], {icon: fun_myIcon('#07077b')}).addTo(map).bindPopup("<b>mercredi 19 juil. 2023</b>");
+	L.marker([53.19360,13.03565], {icon: fun_myIcon('#060678')}).addTo(map).bindPopup("<b>jeudi 20 juil. 2023</b>");
+	L.marker([53.07451,13.17497], {icon: fun_myIcon('#060676')}).addTo(map).bindPopup("<b>vendredi 21 juil. 2023</b>");
+	L.marker([52.73845,13.24056], {icon: fun_myIcon('#050574')}).addTo(map).bindPopup("<b>samedi 22 juil. 2023</b>");
+	L.marker([52.51831,13.38744], {icon: fun_myIcon('#040470')}).addTo(map).bindPopup("<b>lundi 24 juil. 2023</b>");
+	L.marker([47.99837,7.85552], {icon: fun_myIcon('#02026c')}).addTo(map).bindPopup("<b>mercredi 26 juil. 2023</b>");
+	L.marker([47.45244,6.58308], {icon: fun_myIcon('#02026a')}).addTo(map).bindPopup("<b>jeudi 27 juil. 2023</b>");
+	L.marker([47.26545,6.07147], {icon: fun_myIcon('#010168')}).addTo(map).bindPopup("<b>vendredi 28 juil. 2023</b>");
+	L.marker([47.11037,5.49455], {icon: fun_myIcon('#000066')}).addTo(map).bindPopup("<b>samedi 29 juil. 2023</b>");
+	L.marker([47.30868,5.42729], {icon: fun_myIcon('#000064')}).addTo(map).bindPopup("<b>dimanche 30 juil. 2023</b>");
+
+
+	L.control.scale({imperial: false}).addTo(map);
+
+
+	</script>
+
+</body>
+</embed>

@@ -1,0 +1,4 @@
+** Message: 09:35:28.143: Connecting to org.freedesktop.Tracker3.Miner.Files
+Initializing nautilus-dropbox 2022.12.05
+
+** (org.gnome.Nautilus:13841): WARNING **: 09:35:57.617: Attempted to add a non-existent file to the view.

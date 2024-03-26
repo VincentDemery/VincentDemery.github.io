@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi --> 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']],processEscapes: true}
+  });
+  MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
+      var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
+      VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+      VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+      VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+      VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+      });
+      MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
+      var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;
+      VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+      VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+      VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+      VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+      });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<head>
+        <meta charset="utf-8" />
+        <title>Exercice 2 : Diffusion</title>
+        <link rel="stylesheet" href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/">TP de PSA : Modélisation </a></h1>
+                <nav><ul>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/index.html">Introduction</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/preliminaires.html">Préliminaires</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/exercice_1.html">Exercice 1 : Équation d'état</a></li>
+                    <li class="active"><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/exercice_2.html">Exercice 2 : Diffusion</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/exercice_3.html">Exercice 3 : Déplétion</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/apropos.html">À propos</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+    <h1 class="entry-title">Exercice 2 : Diffusion</h1>
+    
+    <p>Il s'agit d'étudier le comportement dynamique d'une grande sphère dans un bain de petites sphères.</p>
+<div class="section" id="premiere-experience">
+<h2>Première expérience</h2>
+<p>Procédez comme à l'exercice précédent pour organiser vos expériences dans un dossier propre à cet exercice. Les programmes sont <a class="reference external" href="files/programs/diffusion.tar">ici</a>.</p>
+<p>Lancez une première simulation, que vous laisserez tourner pendant quelques minutes.</p>
+<p>Les fichiers <em>dump…</em> sont maintenant visualisés avec le fichier <em>visu.py</em> fourni avec les programmes :</p>
+<pre class="code bash literal-block">
+../visu.py dump*
+</pre>
+<p>À côté des fichiers <em>dump…</em>, le fichier de sortie <em>bparticle.dat</em> contient les informations suivantes :
+&lt;temps&gt; &lt;position x&gt; &lt;position y&gt; &lt;vitesse x&gt; &lt;vitesse y&gt;.</p>
+<p>Créez le notebook iPython et tracez les positions en fonction du temps <span class="math">\(x(t)\)</span> et <span class="math">\(y(t)\)</span>, puis la trajectoire de la grande sphère <span class="math">\((x,y)\)</span>.</p>
+</div>
+<div class="section" id="exercice">
+<h2>Exercice</h2>
+<div class="section" id="distribution-des-vitesses">
+<h3>Distribution des vitesses</h3>
+<p>Tracez un histogramme de la distribution des vitesses <span class="math">\(v_x\)</span> et <span class="math">\(v_y\)</span> avec la fonction <em>hist</em>, pour deux valeurs de la fraction volumique. Comparez cette distribution à la prédiction théorique vue dans les notes de physique statistique. De quoi dépend cette distribution ? De quoi ne dépend-elle pas, de façon de surprenante ?</p>
+</div>
+<div class="section" id="deplacement-quadratique-moyen">
+<h3>Déplacement quadratique moyen</h3>
+<p>On veut maintenant étudier le déplacement quadratique moyen <span class="math">\(Q(\tau)=\left\langle [\mathbf{r}(t+\tau)-\mathbf{r}(t)]^2\right\rangle\)</span>. On veut tracer cette courbe pour deux valeurs de la fraction volumique en échelle logarithmique.</p>
+<div class="section" id="gestion-des-gros-fichiers">
+<h4>Gestion des gros fichiers</h4>
+<p>Il faut faire tourner les simulations plus longtemps (au moins une heure), ce qui crée des fichiers de données énormes. On peut voir leur taille et leur nombre de lignes avec les commandes suivantes :</p>
+<pre class="code bash literal-block">
+ls -l <span class="p">|</span> grep bpart
+wc -l bparticle.dat
+</pre>
+<p>Un fichier de <span class="math">\(10^8\)</span> lignes est raisonnable pour cet exercice ; notez que vous pouvez compter le nombre de lignes sans arrêter la simulation. Ces fichiers sont trop gros pour être importés dans iPython (importer un fichier le charge dans la mémoire vive). Ils sont gros car ils contiennent une trajectoire longue et bien échantillonée. Vous allez les découper en deux fichiers, le premier contenant une trajectoire courte et bien échantillonée, pour voir ce qui se passe aux temps courts, le second une trajectoire longue et mal échantillonée, pour voir ce qui se passe aux temps longs. Les commandes sont</p>
+<pre class="code bash literal-block">
+head -n <span class="m">1000000</span> bparticle.dat &gt; bp_court.dat
+awk <span class="s1">'NR%100==1'</span> bparticle.dat &gt; bp_long.dat
+</pre>
+<p>La première commande prend le premier million de lignes dans <em>bparticle.dat</em>, et le redirige vers le fichier <em>bp_court.dat</em>. La seconde prend une ligne sur 100 et l'écrit dans <em>bp_long.dat</em>.</p>
+<p>Ces fichiers restent gros : il est préférable de ne les charger qu'une fois, puis d'utiliser le tableau de données comme argument des fonctions (c'est à dire, ne pas charger le fichier dans les fonctions comme à l'exercice précédent).</p>
+</div>
+<div class="section" id="calcul-du-deplacement-quadratique-moyen">
+<h4>Calcul du déplacement quadratique moyen</h4>
+<p>Écrivez une fonction qui prend en argument un fichier de données (i.e. une trajectoire) et un entier <span class="math">\(n\)</span> et renvoie <span class="math">\(Q(n\times\delta t)\)</span> où <span class="math">\(\delta t\)</span> est le pas de temps de la trajectoire. L'exécution de cette fonction prend du temps, il faut l'utiliser de façon raisonnée.</p>
+<p>Comme on veut tracer <span class="math">\(Q(\tau)\)</span> en échelle log-log, il faut prendre des points régulièrement espacés sur une échelle logarithmique. Écrivez une ligne qui renvoie 30 points régulièrement espacés en échelle logarithmique entre <span class="math">\(a\)</span> et <span class="math">\(b\)</span>.</p>
+<p>Écrivez une fonction qui calcule le déplacement quadratique moyen pour les points d'une telle liste et renvoie un tableau à deux colonnes <span class="math">\(\tau\)</span> et <span class="math">\(Q(\tau)\)</span>. Pour avoir une statistique suffisante pour calculer le déplacement quadratique moyen, le temps maximal <span class="math">\(\tau\)</span> doit rester petit devant la durée <span class="math">\(T_\mathrm{traj}\)</span> de la trajectoire, par exemple <span class="math">\(\tau=T_\mathrm{traj}/100\)</span>.</p>
+<p>Calculez le déplacement quadratique moyen aux temps courts et aux temps longs, et tracez-les sur le même graphe. Répétez cette opération pour deux valeurs de la fraction volumique, par exemple 0.2 et 0.4. Identifiez deux régimes par la pente de la courbe (ballistique et diffusif). Aux temps courts, tracer la prédiction théorique donnée dans les notes de physique statistique, et aux temps longs tracez l'asymptote.</p>
+<p>Comment ces deux régimes dépendent-ils de la température et de la densité du gaz ? Quelle est la distance parcourue par la grande sphère pendant le régime ballistique ?</p>
+</div>
+</div>
+</div>
+<script type='text/javascript'>if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        availableFonts: ['STIX', 'TeX']," +
+        "        preferredFont: 'STIX'," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="footer" class="body">
+                Généré par <a href="http://getpelican.com/">Pelican</a>, un générateur de sites statiques en <a href="http://python.org">Python</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

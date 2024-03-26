@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi --> 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']],processEscapes: true}
+  });
+  MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
+      var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
+      VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+      VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+      VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+      VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+      });
+      MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
+      var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;
+      VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+      VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+      VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+      VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+      });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<head>
+        <meta charset="utf-8" />
+        <title>Exercice 1 : Équation d'état</title>
+        <link rel="stylesheet" href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/">TP de PSA : Modélisation </a></h1>
+                <nav><ul>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/index.html">Introduction</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/preliminaires.html">Préliminaires</a></li>
+                    <li class="active"><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/exercice_1.html">Exercice 1 : Équation d'état</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/exercice_2.html">Exercice 2 : Diffusion</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/exercice_3.html">Exercice 3 : Déplétion</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/apropos.html">À propos</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+    <h1 class="entry-title">Exercice 1 : Équation d'état</h1>
+    
+    <p>L'objectif de cet exercice est de déterminer l'équation d'état d'un systèmes de sphères dures en 3 dimensions, en traçant la pression en fonction de la fraction volumique.</p>
+<div class="section" id="premiere-experience">
+<h2>Première « expérience »</h2>
+<div class="section" id="preparation">
+<h3>Préparation</h3>
+<p>Une bonne organisation est d'avoir un dossier pour chaque exercice, qui contiendra les programmes exécutables et le notebook Jupyter où les données seront traitées. On peut (doit) ensuite un sous-dossier pour chaque expérience, qui contiendra le fichier de paramètres et les fichiers de sortie.</p>
+<p>Commencez par créer un dossier pour cet exercice :</p>
+<pre class="code bash literal-block">
+mkdir état
+<span class="nb">cd</span> état
+</pre>
+<p>Puis téléchargez les programmes <a class="reference external" href="files/programs/equation_etat.tar">ici</a>, ouvrez l'archive en cliquant dessus, et extrayez son contenu dans le dossier de l'exercice.</p>
+<p>Pour préparer la première expérience, créez son dossier et copiez-y le fichier de paramètres <em>run.pot</em>:</p>
+<pre class="code bash literal-block">
+mkdir exp1
+cp run.pot exp1/
+<span class="nb">cd</span> exp1
+</pre>
+<p>Pour modifier les paramètres de la simulation (par exemple la fraction volumique), vous pouvez éditer le fichier de paramètres (celui qui est dans le dossier de l'expérience) avec l'éditeur en ligne de commande <em>nano</em>:</p>
+<pre class="code bash literal-block">
+nano run.pot
+</pre>
+<p>Pour enregistrer et sortir de nano, utilisez <em>Ctrl + X</em>.</p>
+</div>
+<div class="section" id="simulation">
+<h3>Simulation</h3>
+<p>Vous pouvez maintenant lancer la simulation</p>
+<pre class="code bash literal-block">
+../evmd --file run.pot
+</pre>
+<p>Les deux points donnent le chemin de l'exécutable qui est dans le dossier <em>parent</em> du dossier de l'expérience. Il prend comme argument le fichier de paramètres, ici <em>run.pot</em>. La simulation peut être interrompue après quelques minutes avec <em>Ctrl + C</em> dans le terminal (cette commande sert, de manière générale, à arrêter l'exécution d'un programme).</p>
+</div>
+<div class="section" id="fichiers-de-sortie-et-visualisation">
+<h3>Fichiers de sortie et visualisation</h3>
+<p>Vous pouvez voir les fichiers de sortie avec la commande <em>ls</em>, où <em>ls -l</em> pour avoir leur taille. La commande <em>less</em> permet de voir le contenu d'un fichier (utiler <em>Q</em> pour sortir). La sortie est composée de deux types de fichiers :</p>
+<ul class="simple">
+<li>Les fichiers <em>dump….gz</em> contiennent les positions de toutes les particules à des instants différents.</li>
+<li>Le fichier <em>stress.dat</em> contient les données suivantes, organisées en colonnes : &lt;temps&gt; &lt;pression&gt; &lt;sigma_xx&gt; &lt;sigma_yy&gt; &lt;sigma_zz&gt; &lt;sigma_xy&gt; &lt;sigma_xz&gt; &lt;sigma_yz&gt;  (&lt;sigma_ij&gt; sont les composantes du tenseur des contraintes). La commande <em>less</em> permet de voir son contenu  (utiliser <em>Q</em> pour sortir).</li>
+</ul>
+<p>L'expérience peut être visualisée avec le programme <em>xmovie</em>, qui affiche les positions des centres des sphères (projetées sur un plan). Il utilise les fichiers <em>dump</em> :</p>
+<pre class="code bash literal-block">
+xmovie dump*
+</pre>
+</div>
+<div class="section" id="creation-du-notebook-jupyter">
+<h3>Création du notebook Jupyter</h3>
+<p>Nous allons utiliser Jupyter pour traiter les données contenues dans le fichier stress.dat. Nous utiliserons un seul notebook pour tout l'exercice, qui sera donc dans le dossier de l'exercice (et non dans le dossier d'une expérience).
+Dans Jupyter, naviguez jusqu'au dossier de l'exercice (ici « <em>état</em> ») et créez un notebook dans ce dossier.</p>
+<p>Dans le notebook, chargez les modules de calcul numérique et de tracé de courbes avec</p>
+<pre class="code python literal-block">
+<span class="o">%</span><span class="n">pylab</span> <span class="n">inline</span>
+</pre>
+<p>Pour utiliser les données du fichier <em>stress.dat</em>, il faut commencer par les charger. Cela peut se faire avec la commande <em>genfromtxt</em>:</p>
+<pre class="code python literal-block">
+<span class="n">a</span> <span class="o">=</span> <span class="n">genfromtxt</span><span class="p">(</span><span class="s1">'exp1/stress.dat'</span><span class="p">,</span> <span class="n">skip_footer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre>
+<p>Cette commande charge le contenu du fichier dont le chemin est donné par le premier argument dans la variable <em>a</em>. L'option <em>skip_footer=1</em> permet de ne pas charger la dernière ligne du fichier, qui peut n'être que partiellement remplie à cause de notre façon brutale d'arrêter la simulation.</p>
+<p>Pour tracer la pression (deuxième colonne) en fonction du temps (première colonne), il suffit d'utiliser, comme vous l'avez vu dans le tutoriel,</p>
+<pre class="code python literal-block">
+<span class="n">xlabel</span><span class="p">(</span><span class="s1">'t'</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s1">'pression'</span><span class="p">)</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">a</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">a</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+</pre>
+</div>
+</div>
+<div class="section" id="fonctions-de-traitement-en-python">
+<h2>Fonctions de traitement en Python</h2>
+<p>Vous allez devoir traiter un grand nombre d'expériences, il est donc préférable de vous organiser en conséquence en écrivant des fonctions pour les opérations que vous allez devoir appliquer à toutes les expériences. Commencez par écrire une fonction qui, à partir du numéro de l'expérience, trace la pression en fonction du temps. La chaîne de caractères associée à un entier <em>n</em> est <em>str(n)</em>, et les chaînes de caractères sont concaténées avec le caractère « + ». Regardez par exemple ce que donne</p>
+<pre class="code python literal-block">
+<span class="n">n</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'exp'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'/stress.dat'</span><span class="p">)</span>
+</pre>
+<p>Faites calculer et renvoyer la pression moyenne par cette fonction.</p>
+</div>
+<div class="section" id="exercice">
+<h2>Exercice</h2>
+<div class="section" id="pression-en-fonction-du-temps">
+<h3>Pression en fonction du temps</h3>
+<p>Tracez la pression en fonction du temps pour vos expériences (seules une ou deux courbes suffiront dans le rapport). Visualisez les expériences avec <em>xmovie</em> et identifiez deux régimes.</p>
+<p>Faites trois expériences pour une fraction volumique <span class="formula"><i>φ</i> = 0.5</span>, et tracez leur pression sur le même graphe. Que se passe-t-il pour <span class="formula"><i>φ</i> = 0.5</span> (utilisez <em>xmovie</em>) ? La pression qui nous intéresse correspond au deuxième plateau. Pour la calculer, modifiez la fonction précédente pour calculer la pression moyenne pour des temps supérieurs à <span class="formula"><i>t</i><sub>0</sub></span> (que vous pouvez ajouter comme argument optionnel). Vous devrez utiliser la commande <em>numpy.where</em> ; pour comprendre son fonctionnement, analysez le code suivant</p>
+<pre class="code python literal-block">
+<span class="n">r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span><span class="n">r</span><span class="o">&gt;</span><span class="mf">0.5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre>
+</div>
+<div class="section" id="equation-d-etat">
+<h3>Équation d'état</h3>
+<p>Pour chaque fraction volumique, mesurez la pression et notez la dans un fichier (que vous créerez avec l'éditeur <em>nano</em>). Quand la pression varie fortement au cours de l'expérience, prenez la valeur du deuxième plateau. Ordonnez les fractions volumiques dans votre fichier. Ajoutez des points dans les zones où la variation de la pression vous semble singulière.</p>
+</div>
+<div class="section" id="comparaison-au-developpement-du-viriel">
+<h3>Comparaison au développement du viriel</h3>
+<p>Vous avez rencontré le développement du viriel dans les notes de physique statistique, où le calcul du premier ordre est détaillé, et où les coefficients sont donnés jusqu'à l'ordre 10. Le diamètre des sphères dures est <span class="formula"><i>σ</i> = 1</span>, et la fraction volumique <span class="formula"><i>φ</i></span> est reliée à la densité <span class="formula"><i>ρ</i> = <i>N</i> ⁄ <i>V</i></span> par <span class="formula"><i>φ</i> = <i>v</i><i>ρ</i></span>, où <span class="formula"><i>v</i> = 4<i>π</i>(<i>σ</i> ⁄ 2)<sup>3</sup> ⁄ 3 = <i>π</i> ⁄ 6</span> est le volume d'une sphère.</p>
+<p>Recupérez les valeurs du tableau <a class="reference external" href="files/viriel_coeffs.dat">dans ce fichier</a>, puis écrivez une fonction qui renvoie la pression calculée par le développement du viriel à l'ordre <span class="formula"><i>n</i></span> pour une fraction volumique <span class="formula"><i>φ</i></span>.</p>
+<p>Comparez le développement du viriel aux différents ordres au résultat des simulations.</p>
+</div>
+</div>
+
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="footer" class="body">
+                Généré par <a href="http://getpelican.com/">Pelican</a>, un générateur de sites statiques en <a href="http://python.org">Python</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi --> 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']],processEscapes: true}
+  });
+  MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
+      var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
+      VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+      VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+      VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+      VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+      });
+      MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
+      var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;
+      VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+      VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+      VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+      VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+      });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<head>
+        <meta charset="utf-8" />
+        <title>Préliminaires</title>
+        <link rel="stylesheet" href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/">TP de PSA : Modélisation </a></h1>
+                <nav><ul>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/index.html">Introduction</a></li>
+                    <li class="active"><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/preliminaires.html">Préliminaires</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/exercice_1.html">Exercice 1 : Équation d'état</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/exercice_2.html">Exercice 2 : Diffusion</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/exercice_3.html">Exercice 3 : Déplétion</a></li>
+                    <li><a href="http://www.pct.espci.fr/~vdemery/files/tp_thermodynamique/apropos.html">À propos</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+    <h1 class="entry-title">Préliminaires</h1>
+    
+    <div class="section" id="physique-statistique">
+<h2>Physique statistique</h2>
+<p>La physique statistique est l'outil qui permet de passer d'un modèle microscopique (dans notre cas, un ensemble de sphères dures) à ses propriétés macroscopiques. L'essentiel de ce que vous avez besoin de savoir en physique statistique est résumé dans les notes ci-dessous.</p>
+<p>Après avoir lu les notes, déterminez l'effet de la température sur la pression pour un système de sphères dures.</p>
+<p><a class="reference external" href="files/intro_phy_stat.pdf">Notes de physique statistique</a>.</p>
+</div>
+<div class="section" id="utilisation-de-la-ligne-de-commande">
+<h2>Utilisation de la ligne de commande</h2>
+<p>Pour lancer le programme de dynamique moléculaire, mais aussi traiter les résultats et les organiser dans des répertoires (correspondants aux expériences numériques), vous utiliserez le terminal et son interpréteur, <a class="reference external" href="http://fr.wikipedia.org/wiki/Bourne-Again_shell">Bash</a>. <a class="reference external" href="files/bash_cheat_sheet.pdf">Ce document</a> résume les commandes servant à se déplacer dans l'arborescence, copier et éditer des fichiers, etc. Bien que le terminal soit moins avenant que les outils habituels (gestionnaire de fichiers, éditeur de texte plus évolué, etc.), il est plus efficace quand il s'agit de traiter un grand nombre de fichiers ou des fichiers de grande taille, situation que vous allez rencontrer.</p>
+<p>Ouvrez un terminal, puis allez dans le dossier <em>/var/tp/psa</em> et créez votre répertoire personnel avec les commandes suivantes :</p>
+<pre class="code bash literal-block">
+<span class="nb">cd</span> /var/tp/psa/
+mkdir Karadoc_Perceval
+<span class="nb">cd</span> Karadoc_Perceval
+</pre>
+<p>Quelques remarques :</p>
+<ul class="simple">
+<li>Évitez les espaces dans les noms de dossiers et fichiers.</li>
+<li>La touche tabulation permet l'auto-complétion (d'une commande ou d'un nom de dossier par exemple), elle vous sera très utile.</li>
+<li>La commande <em>pwd</em> indique votre position dans l'arborescence, <em>ls</em> permet de lister le contenu d'un dossier, <em>../</em> est le chemin du dossier parent.</li>
+</ul>
+</div>
+<div class="section" id="analyse-de-donnees-avec-jupyter">
+<h2>Analyse de données avec Jupyter</h2>
+<p>Pour traiter les données exportées par le programme, vous utiliserez <a class="reference external" href="https://www.python.org/">Python</a>, et plus particulièrement <a class="reference external" href="https://jupyter.org/">Jupyter</a>, qui permet d'avoir une interface agréable. Vous avez besoin de deux modules : <a class="reference external" href="http://www.numpy.org/">Numpy</a> pour les opérations sur les tableaux, et <a class="reference external" href="http://matplotlib.org/">Matplotlib</a> pour tracer des courbes.</p>
+<p>Vous allez commencer par suivre un tutoriel Jupyter. Pour cela, enregistrez la cible de <a class="reference external" href="files/Introduction.ipynb">ce lien</a> dans votre répertoire personnel.</p>
+<p>Lancez ensuite Jupyter en entrant la commande suivante dans un terminal :</p>
+<pre class="code bash literal-block">
+jupyter-notebook
+</pre>
+<p>Jupyter ouvre une fenêtre dans le navigateur. Cette fenêtre n'est en fait qu'une interface vers le programme, qui tourne dans le terminal : fermer cette fenêtre ne ferme pas le programme et, plus important, fermer le terminal ou y interrompre l'exécution de Jupyter rend la fenêtre inutile.</p>
+<p>Pour ouvrir le tutoriel, naviguez jusqu'à votre répertoire personnel si vous n'y êtes pas déjà et ouvrez <em>Introduction.ipynb</em>; suivez maintenant ce tutoriel.</p>
+<p>Une fois le tutoriel terminé, ne fermez pas Jupyter : vous l'utiliserez dans les exercices qui suivent.</p>
+</div>
+<div class="section" id="programme-de-dynamique-moleculaire">
+<h2>Programme de dynamique moléculaire</h2>
+<p>Vous allez utiliser un programme de dynamique moléculaire développé par <a class="reference external" href="http://www.pct.espci.fr/~michael/">Michael Schindler</a>, qui simule l'évolution d'un système de sphères dures. Ces sphères sont comme des boules de billard : elles avancent en ligne droite entre deux collisions. Il est assez compliqué d'écrire un tel programme qui soit efficace en termes de temps de calcul, et vous vous contenterez d'utiliser ce programme.</p>
+</div>
+
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="footer" class="body">
+                Généré par <a href="http://getpelican.com/">Pelican</a>, un générateur de sites statiques en <a href="http://python.org">Python</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

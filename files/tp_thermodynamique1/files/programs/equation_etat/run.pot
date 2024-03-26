@@ -1,0 +1,12 @@
+volFraction      = 0.56
+temperature      = 1.0
+nInitGrid        = '10 10 10'
+AtomsPerInitCell = 4
+boxGeometry      = Cuboid
+initGeometry     = FCCcub
+limitEventCount  = 5e8
+intervalSum      = 1
+intervalRestart  = 50.0
+intervalDump     = 5.0
+intervalStress   = 0.25
+stressMovingTimescale = 1.0

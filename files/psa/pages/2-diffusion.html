@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<head>
+        <meta charset="utf-8" />
+        <title>2. Diffusion</title>
+        <link rel="stylesheet" href="../theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="../">TP de PSA : Modélisation </a></h1>
+                <nav><ul>
+                    <li><a href="../index.html">Introduction</a></li>
+                    <li><a href="../pages/1-equation-detat.html">1. Équation d'état</a></li>
+                    <li class="active"><a href="../pages/2-diffusion.html">2. Diffusion</a></li>
+                    <li><a href="../pages/3-depletion.html">3. Déplétion</a></li>
+                    <li><a href="../pages/a-propos.html">À propos</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+    <h1 class="entry-title">2. Diffusion</h1>
+    
+    <p>Dans cet exercice, vous étudiez le comportement dynamique d'une grande sphère dans un bain de petites sphères. Les simulations sont maintenant à deux dimensions.</p>
+<h1>Première expérience</h1>
+<p>Procédez comme à l'exercice précédent pour organiser vos expériences dans un dossier propre à cet exercice. Les programmes sont <a href="../files/programs/diffusion.tar">ici</a>.</p>
+<p>Lancez une première simulation, que vous laisserez tourner pendant quelques minutes. Comme pour le premier exercice, la sortie est composée de deux types de fichiers :</p>
+<ul>
+<li>Les fichiers <code>dump...</code>, qui sont maintenant visualisés avec le fichier <code>visu3.py</code> fourni avec les programmes via la commande <code>python ../visu3.py dump*</code>.</li>
+<li>Le fichier <code>bparticle.dat</code>, qui contient les informations suivantes : <code>[temps] [position x] [position y] [vitesse x] [vitesse y]</code>.</li>
+</ul>
+<p>Créez le notebook Jupyter et tracez les positions en fonction du temps, $x(t)$ et $y(t)$, puis la trajectoire de la grande sphère $(x,y)$.</p>
+<h1>Fichiers de données</h1>
+<p>Pour avoir de bonnes statistiques, il faut faire tourner de longues simulations. Pour économiser de l'électricité et du temps de calcul, vous pouvez télécharger directement <a href="../files/DIFF.tar.xz">des résultats de simulations</a>. Les paragraphes ci-dessous expliquent ce qu'ils contiennent et comment ils ont été générés.</p>
+<p>Les simulations ont tourné plus d'une heure, ce qui crée des fichiers de données énormes, d'environ $10^8$ lignes. Ces fichiers sont trop gros pour être importés dans Jupyter (importer un fichier le charge dans la mémoire vive). Ils sont gros car ils contiennent une trajectoire longue et bien échantillonée. Ils ont été découpés en deux fichiers, le premier contenant une trajectoire courte et bien échantillonée, pour voir ce qui se passe aux temps courts, le second une trajectoire longue et mal échantillonée, pour voir ce qui se passe aux temps longs.</p>
+<p>Les commandes qui ont été utilisées sont les suivantes ; vous pouvez les tester sur les fichiers issus de vos simulations. Pour commencer, on peut voir la taille et le nombre de lignes d'un fichier avec les commandes suivantes :</p>
+<div class="highlight"><pre><span></span><code>ls<span class="w"> </span>-lh<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>bpart
+wc<span class="w"> </span>-l<span class="w"> </span>bparticle.dat
+</code></pre></div>
+
+<p>Le découpage en deux fichiers a été fait avec les commandes </p>
+<div class="highlight"><pre><span></span><code>head<span class="w"> </span>-n<span class="w"> </span><span class="m">1000000</span><span class="w"> </span>bparticle.dat<span class="w"> </span>&gt;<span class="w"> </span>bp_court.dat
+awk<span class="w"> </span><span class="s1">&#39;NR%100==1&#39;</span><span class="w"> </span>bparticle.dat<span class="w"> </span>&gt;<span class="w"> </span>bp_long.dat
+</code></pre></div>
+
+<p>La première commande prend le premier million de lignes dans <code>bparticle.dat</code>, et le redirige vers le fichier <code>bp_court.dat</code>. La seconde prend une ligne sur 100 et l'écrit dans <code>bp_long.dat</code>.</p>
+<p>Les fichiers obtenus restent gros, et leur chargement dans Jupyter prend du temps, il donc est préférable de ne les charger qu'une fois, puis d'utiliser le tableau de données comme argument des fonctions (c'est à dire, ne pas charger le fichier dans les fonctions comme à l'exercice précédent).</p>
+<h1>Exercice</h1>
+<h2>Distribution des vitesses</h2>
+<p>Tracez un histogramme de la distribution des vitesses $v_x$ et $v_y$ avec la fonction <code>plt.hist</code>, pour deux valeurs de la fraction volumique. Comparez cette distribution à la distribution de Maxwell pour chaque composante de la vitesse : 
+$$P_\mathrm{M}(v)=\sqrt{\frac{m}{2\pi k_\mathrm{B}T}} \exp\left(-\frac{mv^2}{2k_\mathrm{B}T}\right).$$
+De quoi dépend cette distribution ? De quoi ne dépend-elle pas, de façon peut-être surprenante ?</p>
+<h2>Déplacement quadratique moyen</h2>
+<p>La trajectoire $\mathbf{r}(t)$ de la grosse sphère semble « aléatoire ». On cherche à quantifier cet aléa. Comme le problème est invariant dans le temps, on ne va s'intéresser qu'aux déplacements, c'est à dire à la statistique de la <em>variable aléatoire</em> $\mathbf{r}(t+\tau)-\mathbf{r}(t)$, qui dépend de $\tau$. Comme le système est isotrope (si on met de côté l'effet de la boîte carrée, qui ne devrait pas avoir de rôle si la boîte est assez grande), on s'attend à ce que la distribution de ce déplacement soit aussi isotrope. La moyenne du déplacement est donc nulle, et la quantité la plus simple à considérer est le moment suivant, le <em>déplacement quadratique moyen</em>
+$$Q(\tau)=\left\langle [\mathbf{r}(t+\tau)-\mathbf{r}(t)]^2\right\rangle.$$</p>
+<p>D'après cette définition, $Q(\tau)$ est une <em>moyenne d'ensemble</em> dont la valeur ne dépend pas de $t$. Cela voudrait dire qu'il faut la calculer sur un grand nombre de simulations. Mais si le système est <em>ergodique</em>, elle est égale à la <em>moyenne temporelle</em> et peut donc être calculée avec une seule trajectoire ; c'est ce que vous allez faire.</p>
+<p>Cette quantité est l'observable centrale de cet exercice. On veut tracer la courbe $Q(\tau)$ en échelle logarithmique pour les différentes valeurs de la fraction volumique.</p>
+<h2>Calcul du déplacement quadratique moyen</h2>
+<p>Écrivez la fonction <code>Qn(traj, n)</code> qui prend en argument un tableau <code>traj</code> représentant une trajectoire et un entier <code>n</code> et renvoie $Q(n\times\delta t)$ où $\delta t$ est le pas de temps de la trajectoire. Cette fonction ne doit pas utiliser de boucle <code>for</code> pour parcourir les grands tableaux !</p>
+<p>Comme on veut tracer $Q(\tau)$ en échelle log-log, il faut prendre des points régulièrement espacés sur une échelle logarithmique. Utilisez la fonction <code>np.geomspace</code> pour obtenir 30 points régulièrement espacés en échelle logarithmique entre $a$ et $b$, puis les fonctions <code>np.floor</code> et <code>np.unique</code> pour arrondir ces nombres à des entiers (il faut un nombre entier de pas de temps) et éliminer les doublons.</p>
+<p>Écrivez la fonction <code>DQM(traj)</code> qui calcule le déplacement quadratique moyen pour les points d'une telle liste et renvoie un tableau à deux colonnes $\tau$ et $Q(\tau)$ à partir du tableau <code>traj</code> représentant la trajectoire. Pour avoir une statistique suffisante pour calculer le déplacement quadratique moyen, le temps maximal $\tau$ doit rester petit devant la durée $T_\mathrm{traj}$ de la trajectoire, par exemple $\tau=T_\mathrm{traj}/100$. Cette fonction doit utiliser la fonction <code>Qn</code> définie précédemment.</p>
+<p>Calculez le déplacement quadratique moyen aux temps courts et aux temps longs, et tracez-les sur le même graphe. Répétez cette opération pour les deux autres valeurs de la fraction volumique, et tracez tout sur le même graphe. Identifiez deux régimes par la pente de la courbe (ballistique et diffusif). Aux temps courts, tracez la prédiction théorique 
+$$Q(\tau)\simeq \tau^2\langle v^2\rangle = \frac{d k_\mathrm{B}T}{m},$$
+où $d$ est la dimension de l'espace, $d=2$ ici.
+Aux temps longs, tracez la droite $Q(\tau)=a\tau$, le coefficient $a$ étant choisi pour que la droite passe par le dernier point de la courbe.</p>
+<p>Comment ces deux régimes dépendent-ils de la température et de la densité du gaz ? Déterminez à partir des courbes la distance parcourue par la grande sphère pendant le régime ballistique.</p>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="footer" class="body">
+                Généré par <a href="http://getpelican.com/">Pelican</a>, un générateur de sites statiques en <a href="http://python.org">Python</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

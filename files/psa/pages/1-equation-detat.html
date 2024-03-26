@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<head>
+        <meta charset="utf-8" />
+        <title>1. Équation d'état</title>
+        <link rel="stylesheet" href="../theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="../">TP de PSA : Modélisation </a></h1>
+                <nav><ul>
+                    <li><a href="../index.html">Introduction</a></li>
+                    <li class="active"><a href="../pages/1-equation-detat.html">1. Équation d'état</a></li>
+                    <li><a href="../pages/2-diffusion.html">2. Diffusion</a></li>
+                    <li><a href="../pages/3-depletion.html">3. Déplétion</a></li>
+                    <li><a href="../pages/a-propos.html">À propos</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+    <h1 class="entry-title">1. Équation d'état</h1>
+    
+    <p>L'objectif de cet exercice est de déterminer l'équation d'état d'un systèmes de sphères dures en 3 dimensions, en traçant la pression en fonction de la fraction volumique.</p>
+<h1>Préparation</h1>
+<p>Téléchargez les programmes <a href="../files/programs/equation_etat.tar">ici</a> ; l'archive est placée dans votre dossier personnel, dans le dossier <code>Téléchargements</code>.</p>
+<p>Ouvrez maintenant un terminal et tapez les premières commandes :</p>
+<ul>
+<li><code>pwd</code> (suivie de <code>Entrée</code>) permet d'afficher le chemin absolu du répertoire courant, qui est par défaut votre répertoire personnel au lancement du terminal. Notez qu'il commence par <code>/</code>, qui est la <em>racine</em> du système de fichiers. </li>
+<li><code>ls</code> affiche le contenu du répertoire courant.</li>
+<li><code>cd [chemin]</code> permet de changer de répertoire courant en <code>[chemin]</code>. Le <code>[chemin]</code> peut être donné de façon absolue (en commençant par <code>/</code>) ou, ce qui est souvent plus pratique, de façon relative (au répertoire courant). Par exemple, si vous tapez <code>cd Téléchargements</code>, vous vous retrouverez dans le répertoire <code>Téléchargements</code> qui est dans votre répertoire personnel. Vous pouvez ensuite utiliser <code>pwd</code> pour voir le nouveau chemin et <code>ls</code> pour voir son contenu ; vous devriez y trouver l'archive <code>equation_etat.tar</code>. Voilà d'autres chemins que vous pouvez entrer :<ul>
+<li><code>~</code> : il s'agit de votre répertoire personnel. <code>cd ~</code> vous emmène dans votre répertoire personnel. Vous pouvez composer ces chemins, <code>cd ~/Téléchargements</code> vous emmène dans votre répertoire <code>Téléchargements</code>.</li>
+<li><code>..</code> : il s'agit du répertoire situé « au-dessus » du répertoire courant dans le système de fichiers. Exécuté dans <code>Téléchargements</code>, vous serez envoyé dans votre dossier personnel. Vous pouvez utiliser <code>pwd</code> avant et après cette commande pour comprendre son comportement.</li>
+</ul>
+</li>
+</ul>
+<p>Des raccourcis clavier facilitent l'utilisation du terminal :</p>
+<ul>
+<li>La touche <code>tabulation</code> permet de compléter automatiquement ce que vous êtes en train de taper. Cela permet de gagner du temps et d'éviter des fautes de frappes. Placez-vous dans votre répertoire personnel et tapez <code>cd Tél</code> puis <code>tabulation</code> : <code>Téléchargements</code> sera complété automatiquement. L'auto-complétion ne complète que s'il y a une seule possibilité.</li>
+<li>La flèche haut permet de faire défiler l'historique des commandes déjà utilisées.</li>
+</ul>
+<p>Votre répertoire courant est en fait sur le réseau, et non sur la machine que vous êtes en train d'utiliser. Pour des raisons d'espace de stockage et de performance, vous lancerez les simulations localement. Vous vous placerez pour cela dans le répertoire <code>/scratch/psa</code> (avec <code>cd /scratch/psa</code>) ; (s'il n'existe pas, tapez <code>cd /scratch &amp;&amp; mkdir psa</code>). Ce répertoire est commun à tous les utilisateur de cet ordinateur ; créez-y votre votre répertoire avec la commande <code>mkdir [nom du binôme]</code> (évitez les espaces dans le nom). Entrez ensuite dans votre répertoire avec la commande <code>cd</code>.</p>
+<p>Copiez l'archive dans votre répertoire puis extrayez les programmes avec les commandes</p>
+<div class="highlight"><pre><span></span><code>mv<span class="w"> </span>~/Téléchargements/equation_etat.tar<span class="w"> </span>./
+tar<span class="w"> </span>-xvf<span class="w"> </span>equation_etat.tar
+</code></pre></div>
+
+<p>Dans la première ligne, le point indique le répertoire courant, où on souhaite déplacer l'archive. Déplacez-vous ensuite dans le dossier créé, <code>equation_etat</code>.</p>
+<h1>Première expérience</h1>
+<h2>Création du dossier et lancement du programme</h2>
+<p>Une bonne organisation est d'avoir un dossier pour chaque exercice, qui contiendra les programmes exécutables et le notebook Jupyter où les données seront traitées, et un sous-dossier pour chaque expérience, qui contiendra le fichier de paramètres et les fichiers de sortie.</p>
+<p>Créez le dossier de la première expérience et copiez-y le fichier de paramètres avec la commande <code>cp</code> :</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>exp1
+cp<span class="w"> </span>run.pot<span class="w"> </span>exp1/
+<span class="nb">cd</span><span class="w"> </span>exp1
+</code></pre></div>
+
+<p>Pour modifier les paramètres de la simulation (par exemple la fraction volumique), vous pouvez éditer le fichier de paramètres (celui qui est dans le dossier de l'expérience) avec l'éditeur en ligne de commande nano, en tapant <code>nano run.pot</code>. Vous pourrez ensuite utiliser <code>Ctrl + X</code> pour sortir en enregistrant.</p>
+<p>Vous pouvez maintenant lancer la simulation en entrant</p>
+<div class="highlight"><pre><span></span><code>../evmd.linux<span class="w"> </span>--file<span class="w"> </span>run.pot
+</code></pre></div>
+
+<p>La simulation peut être interrompue après quelques minutes avec <code>Ctrl + C</code> dans le terminal (cette commande sert, de manière générale, à arrêter l'exécution d'un programme).</p>
+<h2>Fichiers de sortie et visualisation</h2>
+<p>Vous pouvez voir les fichiers de sortie avec la commande <code>ls</code> (<code>ls -l</code> affiche aussi leur taille). La sortie est composée de deux types de fichiers :</p>
+<ul>
+<li>Les fichiers <code>dump….gz</code> contiennent les positions de toutes les particules à des instants différents.</li>
+<li>Le fichier <code>stress.dat</code> contient les données suivantes, organisées en colonnes : <code>[temps] [pression] [sigma_xx] [sigma_yy] [sigma_zz] [sigma_xy] [sigma_xz] [sigma_yz]</code> (<code>[sigma_ij]</code> sont les composantes du tenseur des contraintes). La commande <code>less</code> permet de voir son contenu (utiliser <code>Q</code> pour sortir).</li>
+</ul>
+<p>L'expérience peut être visualisée avec le programme <em>VMD</em>, qui affiche les positions des centres des sphères (le rayon affiché n'est qu'une représentation). Pour le lancer, utilisez le script <code>vmd_dump.sh</code>:</p>
+<div class="highlight"><pre><span></span><code>bash<span class="w"> </span>../vmd_dump.sh
+</code></pre></div>
+
+<p>Seule la tranche du système $0 &lt; z &lt; 12$ est affichée. Pour afficher toutes les sphères, entrez la commande <code>mol modselect 0 0 all</code> dans l'invite de commande de VMD.</p>
+<h2>Lancement de Jupyter</h2>
+<p>Pour lancer l'interface Jupyter, ouvrez un nouveau terminal et lancez Jupyter avec</p>
+<div class="highlight"><pre><span></span><code>conda<span class="w"> </span>activate<span class="w"> </span>psa
+jlab
+</code></pre></div>
+
+<p>Naviguez ensuite jusqu'à votre répertoire de travail, <code>/scratch/psa/[nom du binôme]</code>.</p>
+<ul>
+<li>Lancer Jupyter dans votre répertoire de travail vous permettra d'avoir accès aux trois exercices à partir de la même interface. </li>
+<li>Il est important d'utiliser un nouveau terminal car celui-ci est mono-tâche : vous ne pouvez pas exécuter des programmes dans la fenêtre de terminal utilisée pour lancer Jupyter. Ne fermez pas cette fenêtre !</li>
+</ul>
+<p>Dans Jupyter, vous pouvez naviguer jusqu'au dossier de l'exercice et y créer un nouveau Notebook en choissant l'environnement « conda : psa ». Vous utiliserez ce Notebook pour tout l'exercice.</p>
+<p>Dans le notebook, commencez par charger les modules Numpy et Matplotlib avec </p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</code></pre></div>
+
+<h2>Tracé de la pression en fonction du temps</h2>
+<p>Pour utiliser les données du fichier <code>stress.dat</code>, il faut commencer par les charger avec la commande <code>genfromtxt</code> :</p>
+<div class="highlight"><pre><span></span><code><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="s1">&#39;exp1/stress.dat&#39;</span><span class="p">,</span> <span class="n">skip_footer</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Cette commande charge le contenu du fichier dont le chemin est donné par le premier argument dans la variable <code>a</code>. L'option <code>skip_footer=1</code> permet de ne pas charger la dernière ligne du fichier, qui peut n'être que partiellement remplie à cause de notre façon brutale d'arrêter la simulation.</p>
+<p>Pour tracer la pression (deuxième colonne) en fonction du temps
+(première colonne), il suffit d'utiliser</p>
+<div class="highlight"><pre><span></span><code><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;pression&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">a</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">a</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div>
+
+<h1>Équation d'état et diagramme de phase</h1>
+<p>Vous êtes maintenant prêts pour simuler un grand nombre de fractions volumiques et obtenir l'équation d'état du système, c'est à dire sa pression $P$ en fonction de sa fraction volumique $\phi$.</p>
+<h2>Fonctions de traitement en Python</h2>
+<p>Vous allez devoir traiter un grand nombre d'expériences, il est donc préférable de vous organiser en conséquence en écrivant des fonctions pour les opérations que vous allez devoir appliquer à toutes les expériences. </p>
+<p>Commencez par écrire la fonction <code>pression(n)</code> qui, à partir du numéro de l'expérience <code>n</code>, trace la pression en fonction du temps. La chaîne de caractères associée à un entier $n$ est <code>str(n)</code>, et les chaînes de caractères sont concaténées avec le caractère <code>+</code>. Regardez par exemple ce que donne</p>
+<div class="highlight"><pre><span></span><code><span class="n">n</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;exp&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/stress.dat&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Faites aussi calculer et renvoyer la pression moyenne par cette fonction.</p>
+<h2>Pression en fonction du temps</h2>
+<p>Tracez la pression en fonction du temps pour vos expériences (seules une ou deux courbes suffiront dans le rapport). Visualisez les expériences avec <em>xmovie</em> et identifiez deux régimes.</p>
+<p>Faites trois expériences pour une fraction volumique $\phi=0.5$, et tracez leur pression sur le même graphe. Que se passe-t-il pour
+$\phi=0.5$ (utilisez <em>VMD</em>) ? La pression qui nous intéresse
+correspond au deuxième plateau. Pour la calculer, modifiez la fonction précédente pour calculer la pression moyenne pour des temps supérieurs à $t_0$, que vous pouvez ajouter comme argument optionnel en écrivant</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pression</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="o">...</span>
+</code></pre></div>
+
+<p>Vous devrez utiliser la commande <em>numpy.where</em> ; pour comprendre son fonctionnement,
+analysez le code suivant</p>
+<div class="highlight"><pre><span></span><code><span class="n">r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span><span class="n">r</span><span class="o">&gt;</span><span class="mf">0.5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</code></pre></div>
+
+<h2>Équation d'état</h2>
+<p>Pour chaque fraction volumique, mesurez la pression et notez-la dans un tableau de la forme :</p>
+<div class="highlight"><pre><span></span><code><span class="n">eqetat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.56</span><span class="p">,</span> <span class="mf">10.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                   <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+                   <span class="o">...</span><span class="p">,</span>
+                   <span class="p">[</span><span class="mf">0.7</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">12</span><span class="p">]])</span>
+</code></pre></div>
+
+<p>La dernière colone contient le numéro de l'expérience ; cela permet de retrouver facilement les résultats si un point semble aberrant. </p>
+<p>Quand la pression varie fortement au cours de l'expérience, prenez la valeur du deuxième plateau. Ajoutez des points dans les zones où la variation de la pression vous semble singulière.</p>
+<p>Tracez la courbe $P(\phi)$.</p>
+<h2>Comparaison au développement du viriel</h2>
+<p>Le développement du viriel est un développement de la pression en puissances de la densité $\rho$:
+$$\frac{P}{k_\mathrm{B}T}=\sum_{i=1}^\infty (4v)^{i-1}B_i\rho^i.$$
+Le volume $v$ d'une sphère de diamètre 1 est $v=\pi/6$. La densité est reliée à la fraction volumique par $\phi=v\rho$. Les coefficients du viriel $B_i$ ont été calculés jusqu'à l'ordre 10. Vous pouvez les charger en copiant la ligne suivante (<code>B[0]</code> correspond au coefficient $B_1$, etc) :</p>
+<div class="highlight"><pre><span></span><code><span class="n">B</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.625</span><span class="p">,</span> <span class="mf">0.2869495</span><span class="p">,</span> <span class="mf">0.110252</span><span class="p">,</span> <span class="mf">0.03888198</span><span class="p">,</span> <span class="mf">0.01302354</span><span class="p">,</span> <span class="mf">0.0041832</span><span class="p">,</span> <span class="mf">0.0013094</span><span class="p">,</span> <span class="mf">0.0004035</span><span class="p">]</span>
+</code></pre></div>
+
+<p>Écrivez la fonction <code>pression_viriel(phi, n)</code> qui renvoie la pression calculée par le développement du viriel à l'ordre $n$ pour une fraction volumique $\phi$. Si vous n'utilisez pas de fonction trop compliquée, l'argument <code>phi</code> peut être un tableau.</p>
+<p>Comparez le développement du viriel aux différents ordres au résultat des simulations. Notez que $k_\mathrm{B}T=1$ dans les simulations.</p>
+<h2>Effet de la température</h2>
+<p>Vous avez obtenu $P(\phi)$, mais l'équation d'état demande en principe aussi la dépendance en la température, $P(\phi, T)$.</p>
+<p>Pour déterminez cette dépendance, partez de la fonction de partition de ce système, qui peut s'écrire
+$$Z=\frac{1}{N!}\int \prod_i (d\mathbf{r}_i\, d\mathbf{v}_i) \exp\left(-\sum_i \frac{m v_i^2}{2 k_\mathrm{B}T}\right) \prod_{i&lt;j}\theta(|\mathbf{r}_i-\mathbf{r}_j|-1)$$
+L'intégrale sur les vitesses peut être calculée, ce qui donne 
+$$Z=\left(\frac{2\pi k_\mathrm{B}T}{m} \right)^{3N/2}\frac{1}{N!}\int \prod_i d \mathbf{r}_i \prod_{i&lt;j}\theta(|\mathbf{r}_i-\mathbf{r}_j|-1).$$
+La fonction de partition intervient dans la définition thermodynamique de la pression :
+$$P=k_\mathrm{B}T\frac{\partial\log(Z)}{\partial V}.$$
+Utilisez cette expression pour montrer que la pression est proportionnelle à la température.</p>
+<p>De manière générale, que se passe-t-il dans ce système quand la température augmente ? Vous pourrez adopter une vision mécanique de la pression : elle est donnée par la quantité de mouvement échangée lors de collisions par unité de temps.</p>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="footer" class="body">
+                Généré par <a href="http://getpelican.com/">Pelican</a>, un générateur de sites statiques en <a href="http://python.org">Python</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<head>
+        <meta charset="utf-8" />
+        <title>3. Déplétion</title>
+        <link rel="stylesheet" href="../theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="../">TP de PSA : Modélisation </a></h1>
+                <nav><ul>
+                    <li><a href="../index.html">Introduction</a></li>
+                    <li><a href="../pages/1-equation-detat.html">1. Équation d'état</a></li>
+                    <li><a href="../pages/2-diffusion.html">2. Diffusion</a></li>
+                    <li class="active"><a href="../pages/3-depletion.html">3. Déplétion</a></li>
+                    <li><a href="../pages/a-propos.html">À propos</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+    <h1 class="entry-title">3. Déplétion</h1>
+    
+    <p>Vous étudiez ici l'interaction entre deux grandes sphères générées par des petites shères.</p>
+<h1>Première expérience et fichiers de données</h1>
+<p>Les programmes sont <a href="../files/programs/depletion.tar">là</a>. Procédez comme à l'exercice 2 pour lancer la première simulation et visionner les résultats. Le fichier de sortie <code>bparticle.dat</code> contient les
+informations suivantes : <code>[temps] [position x1] [position y1] [vitesse x1] [vitesse y1] [position x2] [position y2] [vitesse x2] [vitesse y2]</code></p>
+<p>Comme à l'exercice 2, vous pouvez télécharger directement <a href="../files/DEPL.tar.xz">des résultats de simulations</a>. De même, il est préférable de ne charger ces fichiers qu'une fois et d'utiliser le tableau des positions comme argument des fonctions.</p>
+<h1>Distance entre les sphères</h1>
+<p>On s'intéresse à la statistique des distances entre les sphères. La boîte de simulation utilise des conditions aux limites périodiques : « une sphère qui sort de la boîte par la droite y rentre par la gauche ». Topologiquement parlant, le domaine de simulation est un tore. </p>
+<p>Dans ces conditions, la distance entre les deux sphères est la distance la plus courte sur le tore. La fonction suivante calcule la liste des différences de coordonnées pour tableaux de coordonnées <code>x1</code> et <code>x2</code> (notez qu'elle peut s'appliquer aux coordonnées selon <code>x</code> et selon <code>y</code>).</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">dx_tore</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
+    <span class="n">xmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x2</span><span class="p">))</span>
+    <span class="n">xmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x2</span><span class="p">))</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="n">xmax</span> <span class="o">-</span> <span class="n">xmin</span>
+
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span>
+
+    <span class="k">return</span> <span class="n">dx</span> <span class="o">-</span> <span class="n">L</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">dx</span><span class="o">/</span><span class="n">L</span><span class="p">)</span>
+</code></pre></div>
+
+<p>À partir de cette fonction, écrivez la fonction <code>dist_tore(pos)</code> qui prend en argument un tableau de positions <code>pos</code> (récupéré dans un fichier <code>bparticle.dat</code>) et renvoie la liste des distances sur le tore associées à ces positions.</p>
+<p>Tracez ensuite l'histogramme de ces positions avec la fonction <code>plt.hist</code>.</p>
+<h1>Fonction de corrélation de paire</h1>
+<p>Identifiez trois régions dans cet histogramme et interprétez le comportement de la densité dans chacune d'entre elles.</p>
+<p>À distance intermédiaire, la densité des distances est linéaire en la distance. Cela vient du fait l'intervalle $[r,r+\delta r]$ correspond à un anneau d'aire $\delta A\simeq 2\pi r\delta r$ pour le vecteur $\mathbf{r}_1-\mathbf{r}_2$. Pour corriger cet effet, vous devez commencer par récupérer les données de la densité avec </p>
+<div class="highlight"><pre><span></span><code><span class="n">n</span><span class="p">,</span> <span class="n">bornes</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">hist</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</code></pre></div>
+
+<p><code>bornes</code> contient les bornes des « cases », et <code>n</code> le nombre d'occurences par case. Remarquez que ces deux tableaux ne sont pas de la même longueur. Définissez, en une ligne et toujours sans boucle <code>for</code>, le tableau <code>bm</code>, de la même longueur que <code>n</code> et contenant le milieu des cases. La commande <code>plt.plot(bm, n)</code> devrait afficher une courbe ressemblant à l'histogramme.
+Pour corriger l'effet de la distance, il suffit d'utiliser <code>plt.plot(bm, n/bm)</code> ; c'est, à une constante près, la courbe de la corrélation de paire, $g(r)$. </p>
+<p>Par définition, la corrélation de paire vérifie $g(r)\underset{r\rightarrow\infty}{\longrightarrow} 1$ dans un système infini. Quelle portion de la courbe correspond à la limite $r\to\infty$ ? Utilisez une moyenne sur cette portion de courbe pour normaliser la corrélation. Enfin, vous pouvez enlever la troisième région de la courbe de vos données car elle ne correspond à aucun phénomène physique.</p>
+<p>Rassemblez ces éléments dans la fonction <code>correlation(pos, nbins=100, r1=0, r2=np.inf)</code> qui prend en argument le tableau des positions <code>pos</code>, le nombre de cases à utiliser dans l'histogramme <code>nbins</code>, et les bornes de la région intermédiaire <code>r1</code> et <code>r2</code>, et un retourne la corrélation de paire dans un tableau à deux colones contenant $r$ et $g(r)$.</p>
+<h1>Interaction de déplétion et potentiel effectif</h1>
+<p>Tracez la fonction $g(r)$ pour les différentes fraction volumiques et identifiez l'effet de la fraction volumique. Caractérisez et tentez d'expliquer l'effet observé.</p>
+<p>Si les deux grosses sphères interagissaient via le potentiel $V(r)$, où $r$ est la distance entre les centres des sphères, leur corrélation de paire suivrait la distribution de Boltzman, $g(r)=\exp(-V(r)/[k_\mathrm{B} T])$. Tracez $V(r)$ pour les systèmes étudiés. Comment ce potentiel dépend-il de la fraction volumique ? De la température ?</p>
+<p>Discutez la signification et l'origine de $V(r)$ en regardant le paragraphe sur les interactions interparticulaires entropiques dans <a href="https://fr.wikipedia.org/wiki/Collo%C3%AFde#Interactions_interparticulaires">cet article Wikipédia</a>. Comparez les points de vue thermodynamique et entropique.</p>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="footer" class="body">
+                Généré par <a href="http://getpelican.com/">Pelican</a>, un générateur de sites statiques en <a href="http://python.org">Python</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

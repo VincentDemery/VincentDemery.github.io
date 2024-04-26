@@ -53,7 +53,7 @@ MathJax = {
 <li>La touche <code>tabulation</code> permet de compléter automatiquement ce que vous êtes en train de taper. Cela permet de gagner du temps et d'éviter des fautes de frappes. Placez-vous dans votre répertoire personnel et tapez <code>cd Tél</code> puis <code>tabulation</code> : <code>Téléchargements</code> sera complété automatiquement. L'auto-complétion ne complète que s'il y a une seule possibilité.</li>
 <li>La flèche haut permet de faire défiler l'historique des commandes déjà utilisées.</li>
 </ul>
-<p>Votre répertoire courant est en fait sur le réseau, et non sur la machine que vous êtes en train d'utiliser. Pour des raisons d'espace de stockage et de performance, vous lancerez les simulations localement. Vous vous placerez pour cela dans le répertoire <code>/scratch/psa</code> (avec <code>cd /scratch/psa</code>) ; (s'il n'existe pas, tapez <code>cd /scratch &amp;&amp; mkdir psa</code>). Ce répertoire est commun à tous les utilisateur de cet ordinateur ; créez-y votre votre répertoire avec la commande <code>mkdir [nom du binôme]</code> (évitez les espaces dans le nom). Entrez ensuite dans votre répertoire avec la commande <code>cd</code>.</p>
+<p>Votre répertoire courant est en fait sur le réseau, et non sur la machine que vous êtes en train d'utiliser. Pour des raisons d'espace de stockage et de performance, vous lancerez les simulations localement. Vous vous placerez pour cela dans le répertoire <code>/scratch</code> (avec <code>cd /scratch</code>). Ce répertoire est commun à tous les utilisateur de cet ordinateur ; créez-y votre répertoire avec la commande <code>mkdir [nom du binôme]</code> (évitez les espaces dans le nom). Entrez ensuite dans votre répertoire avec la commande <code>cd</code>.</p>
 <p>Copiez l'archive dans votre répertoire puis extrayez les programmes avec les commandes</p>
 <div class="highlight"><pre><span></span><code>mv<span class="w"> </span>~/Téléchargements/equation_etat.tar<span class="w"> </span>./
 tar<span class="w"> </span>-xvf<span class="w"> </span>equation_etat.tar
@@ -92,7 +92,7 @@ cp<span class="w"> </span>run.pot<span class="w"> </span>exp1/
 jlab
 </code></pre></div>
 
-<p>Naviguez ensuite jusqu'à votre répertoire de travail, <code>/scratch/psa/[nom du binôme]</code>.</p>
+<p>Naviguez ensuite jusqu'à votre répertoire de travail, <code>/scratch/[nom du binôme]</code>.</p>
 <ul>
 <li>Lancer Jupyter dans votre répertoire de travail vous permettra d'avoir accès aux trois exercices à partir de la même interface. </li>
 <li>Il est important d'utiliser un nouveau terminal car celui-ci est mono-tâche : vous ne pouvez pas exécuter des programmes dans la fenêtre de terminal utilisée pour lancer Jupyter. Ne fermez pas cette fenêtre !</li>

@@ -127,9 +127,8 @@ jlab
 
 <p>Faites aussi calculer et renvoyer la pression moyenne par cette fonction.</p>
 <h2>Pression en fonction du temps</h2>
-<p>Tracez la pression en fonction du temps pour vos expériences (seules une ou deux courbes suffiront dans le rapport). Visualisez les expériences avec <em>xmovie</em> et identifiez deux régimes.</p>
-<p>Faites trois expériences pour une fraction volumique $\phi=0.5$, et tracez leur pression sur le même graphe. Que se passe-t-il pour
-$\phi=0.5$ (utilisez <em>VMD</em>) ? La pression qui nous intéresse
+<p>Tracez la pression en fonction du temps pour vos expériences (seules une ou deux courbes suffiront dans le rapport). Visualisez les expériences avec <em>VMD</em> et identifiez deux régimes.</p>
+<p>Faites trois expériences pour une fraction volumique $\phi=0.5$, et tracez leur pression sur le même graphe. Que se passe-t-il pour $\phi=0.5$ (utilisez <em>VMD</em>) ? La pression qui nous intéresse
 correspond au deuxième plateau. Pour la calculer, modifiez la fonction précédente pour calculer la pression moyenne pour des temps supérieurs à $t_0$, que vous pouvez ajouter comme argument optionnel en écrivant</p>
 <div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">pression</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="o">...</span>
@@ -137,9 +136,9 @@ correspond au deuxième plateau. Pour la calculer, modifiez la fonction précéd
 
 <p>Vous devrez utiliser la commande <em>numpy.where</em> ; pour comprendre son fonctionnement,
 analysez le code suivant</p>
-<div class="highlight"><pre><span></span><code><span class="n">r</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-<span class="n">i</span> <span class="o">=</span> <span class="n">where</span><span class="p">(</span><span class="n">r</span><span class="o">&gt;</span><span class="mf">0.5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">r</span><span class="o">&gt;</span><span class="mf">0.5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 </code></pre></div>

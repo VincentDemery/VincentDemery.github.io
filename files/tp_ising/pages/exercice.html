@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<head>
+        <meta charset="utf-8" />
+        <title>Exercice</title>
+        <link rel="stylesheet" href="../theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="../">TP optionnel de PSA : Modèle d'Ising </a></h1>
+                <nav><ul>
+                    <li><a href="../index.html">Introduction</a></li>
+                    <li class="active"><a href="../pages/exercice.html">Exercice</a></li>
+                    <li><a href="../pages/a-propos.html">À propos</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+    <h1 class="entry-title">Exercice</h1>
+    
+    <h1>Programmes et utilisation</h1>
+<h2>Téléchargement des programmes et première simulation</h2>
+<p>Téléchargez <a href="../files/tp_ising.tar.xz">cette archive</a> qui contient :</p>
+<ul>
+<li>le programme de simulation <code>ising.jl</code>,</li>
+<li>le Notebook <code>ising.ipynb</code>.</li>
+</ul>
+<p>Créer un répertoire à votre nom sur <code>/scratch</code>, déplacez-y l'archive et décompressez-là avec la commande </p>
+<div class="highlight"><pre><span></span><code>tar -xvf tp_ising.tar.xz
+</code></pre></div>
+
+<p>Créez dans ce dossier le répertoire <code>results</code>, qui contiendra les résultats des simulations</p>
+<div class="highlight"><pre><span></span><code>mkdir results
+</code></pre></div>
+
+<p>Avant de lancer une simulation, vous pouvez afficher les arguments du code avec</p>
+<div class="highlight"><pre><span></span><code>julia ising.jl -h
+</code></pre></div>
+
+<p>Tous les arguments sont optionnels et leur valeur par défaut est indiquée.</p>
+<p>Lancez la première simulation :</p>
+<div class="highlight"><pre><span></span><code>julia ising.jl
+</code></pre></div>
+
+<p>Les paramètres utilisez sont affichés. La simulation devrait être assez rapide ; le fichier de résultats est placé dans le dossier <code>results</code>.</p>
+<h2>Récupération et affichage des résultats dans le notebook Jupyter</h2>
+<p>Lancez Jupyter dans votre répertoire de travail avec les commandes </p>
+<div class="highlight"><pre><span></span><code>conda activate psa
+jlab
+</code></pre></div>
+
+<p>Puis ouvrez le notebook <code>ising.ipynb</code>. Il contient déjà les fonctions de base qui vous permettront de traiter vos résultats facilement. Exécutez les premières cellules qui chargent les modules et définissent les fonctions de base.</p>
+<p>Pour afficher les résultats de votre première simulation, dont le résultat est <code>results/simu_1.h5</code>, vous pouvez utiliser</p>
+<div class="highlight"><pre><span></span><code><span class="n">plot_file</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Les résultats suivants sont affichés :</p>
+<ul>
+<li>Le programme exporte, à intervalles de temps réguliers, l'aimantation moyenne $m=\frac{1}{N}\sum_{i=1}^N s_i$ et l'énergie moyenne $e=-\frac{J}{N}\sum_{\langle i,j\rangle}s_is_j$, où $\langle i,j\rangle$ désignent les paires de plus proches voisins, $J$ est la constante de couplage et $N=L^2$, où $L$ est la taille du système. </li>
+<li>L'histogramme de l'aimantation moyenne.</li>
+<li>3 configurations typiques.</li>
+</ul>
+<h1>Comportement qualitatif et phases du système et base de données</h1>
+<p>Faites plusieurs simulations en faisant varier la constante de couplage $J$, avec la commande (pour $J=0.3$)</p>
+<div class="highlight"><pre><span></span><code>julia ising.jl -J 0.3
+</code></pre></div>
+
+<p>Vous pouvez regarder le contenu du dossier <code>results</code> ; vous constaterez que chaque simulation y dépose un nouveau fichier. Pour vous y retrouver dans les simulations que vous avez faites, vous pouvez scanner le dossier des résultats et créer un « tableau » (en fait, un <code>DataFrame</code> Pandas) avec la commande</p>
+<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="n">update_results</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Affichez ensuite la variable <code>data</code>. Pour ne pas relire les fichiers déjà ouverts, vous pouvez passer <code>data</code> en argument de la fonction <code>update_results</code> (vous pouvez regarder l'aide de cette commande).</p>
+<p>Observez qualitativement l'état du système et décrivez la ou les phases que vous voyez en utilisant les différentes observables.</p>
+<h1>Caractérisation de la transition de phase</h1>
+<h2>Fluctuations de l'aimantation et de l'énergie</h2>
+<h3>Calcul des fluctuations</h3>
+<p>Vous allez maintenant étudier les fluctuations de l'aimantation, $\left\langle m^2\right\rangle$. Dans cette expression, les moyennes seront calculées avec des moyennes temporelles.</p>
+<p>L'aimantation d'une simulation est accessible avec les commandes suivantes : </p>
+<div class="highlight"><pre><span></span><code><span class="n">g</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file_from_int</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;magnetization&#39;</span><span class="p">])</span>
+</code></pre></div>
+
+<p>La première ligne ouvre le fichier correspondant à l'expérience $1$ ; notez que la fonction <code>file_from_int(n)</code> renvoie le nom de fichier correspondant à l'expérience $n$. La seconde extrait le champ <code>'magnetization'</code>.</p>
+<p>Écrivez la fonction <code>magnetization2(file)</code> qui prend en argument un nom de fichier et qui renvoie les fluctuations de l'aimantation $\left\langle m^2\right\rangle$.</p>
+<p>Écrivez de la même manière la fonction <code>energy2(file)</code> qui prend en argument un nom de fichier et qui renvoie les fluctuations de l'énergie $\left\langle e^2\right\rangle-\langle e\rangle^2$. L'énergie est enregistrée dans le champ <code>'energy'</code> des fichiers de résultats.</p>
+<h3>Mise à jour du tableau de données</h3>
+<p>Pour appliquer ces fonctions à tous les fichiers de résultats, vous pouvez utiliser la commande :</p>
+<div class="highlight"><pre><span></span><code><span class="n">apply_function</span><span class="p">(</span><span class="n">fun</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+</code></pre></div>
+
+<p>où <code>fun</code> est la fonction de que voulez appliquer et <code>col</code> le nom que vous allez donner à ce champ, par exemple <code>'m2'</code> et <code>'e2'</code> pour les fluctuations de l'aimantation et de l'énergie, respectivement. Affichez la variable <code>data</code> pour observer les changements.</p>
+<p>Par défaut, la fonction <code>apply_function</code> ne recalcule pas les quantités déjà calculées. Si vous avez fait une erreur dans les fonctions appliquées, vous pouvez tout recalculer en utilisant l'argument <code>recompute=True</code>.</p>
+<h3>Tracé en fonction du couplage</h3>
+<p>Maintenant que vous avez calculé les fluctuations, vous pouvez les tracer en fonction de la constante de couplage avec</p>
+<div class="highlight"><pre><span></span><code><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;J&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;m2&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;J&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;e2&#39;</span><span class="p">])</span>
+</code></pre></div>
+
+<p>Malheureusement, ces courbes ne sont pas d'assez bonne qualité car d'une part les simulations sont trop courtes pour avoir des statistiques satisfaisantes et d'autre part les effets de taille finie sont importants pour ces petits systèmes ($L=16$ si vous n'avez pas modifié les paramètres par défaut).</p>
+<h2>Transition de phase via les fluctuations</h2>
+<h3>Transition dans un petit système</h3>
+<p>Pour avoir des statistiques suffisantes, il faut faire des simulations plus longues ; vous utiliserez maintenant une durée totale de $T=10^6$. Commencez par faire des simulations de petite taille ($L=16$) avec cette durée, en faisant varier le couplage $J$. </p>
+<p>Pour tracer les fluctuations de l'aimantation et de l'énergie en fonction du couplage, il faut sélectionner les simulations qui ont une durée suffisante dans vos données. Vous pouvez le faire en utilisant la commande</p>
+<div class="highlight"><pre><span></span><code><span class="n">sel</span> <span class="o">=</span> <span class="n">select</span><span class="p">([[</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">]])</span>
+</code></pre></div>
+
+<p>Vous pouvez ensuite afficher la variable <code>sel</code>. Pour tracer les fluctuations de l'énergie et de l'aimantation, vous n'avez qu'à remplacer <code>data</code> par <code>sel</code> dans les commandes ci-dessus.</p>
+<p>Que remarquez-vous sur l'évolution des fluctuations en faisant varier $J$ ? Notez que les fluctuations de l'énergie sont proportionnelles à la capacité calorifique. Estimez la valeur du couplage critique $J_c$.</p>
+<h3>Effets de taille</h3>
+<p>Faites des simulations pour des systèmes de taille $32$ et $64$, en resserrant les valeurs du couplage autour de la valeur critique. Calculez les fluctuations et tracez-les en fonction du couplage. Pour cela, vous pouvez sélectionner chaque taille et tracer les résultats séparément :</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">L</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">]</span> <span class="p">:</span>
+    <span class="n">sel</span> <span class="o">=</span> <span class="n">select</span><span class="p">([[</span><span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="n">L</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">]])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sel</span><span class="p">[</span><span class="s1">&#39;J&#39;</span><span class="p">],</span> <span class="n">sel</span><span class="p">[</span><span class="s1">&#39;m2&#39;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">L</span><span class="p">))</span>
+</code></pre></div>
+
+<p>Discutez les effets de taille dans les fluctuations de l'aimantation et de l'énergie. Essayez d'imaginer ce qui se passe dans la limite de taille infinie (limite thermodynamique).</p>
+<h3>Longueur de corrélation et effets de taille</h3>
+<p>Il n'est pas clair que les quantités moyennes soient les bonnes quantités pour comparer des systèmes de tailles différentes.</p>
+<p>Considérons d'abord l'aimantation sous le couplage critique, $J\lt J_c$. Dans ce régime, l'aimantation varie beaucoup dans un échantillon, mais peut être corrélée sur une longueur $\xi$. Dans ce cas, l'aimantation totale $M=L^2m$ est la somme de $(L/\xi)^2$ variables aléatoires indépendantes de valeur $\pm \xi^2$, donc sa variance est $\langle M^2\rangle=L^2\xi^2$. Pour l'aimantation moyenne, on a donc $\langle m^2\rangle=\xi^2/L^2$. Tracez $L^2\langle m^2\rangle$ pour les différentes tailles et discutez du comportement. Faites de même pour les fluctuations de l'énergie.</p>
+<h3>Cumulant de Binder</h3>
+<p>La meilleure méthode pour localiser la transition de phase est d'utiliser le cumulant de Binder 
+$$B= \frac{3}{2}\left(1-\frac{\left\langle m^4\right\rangle}{3\left\langle m^2\right\rangle^2}\right).$$
+Il vaut 0 quand la distribution est gaussienne et $1$ quand elle est piquée sur $\pm m_0$.</p>
+<p>Calculez le cumulant de Binder et tracez-le en fonction du couplage pour les trois tailles de système. La transition de phase est donnée par l'intersection des trois courbes. Pour la déterminer précisément le couplage critique $J_c$, il faut afficher les lignes des courbes, ce qui requiert de trier les points par valeur du couplage, ce qui peut être fait avec la commande </p>
+<div class="highlight"><pre><span></span><code><span class="n">sel</span> <span class="o">=</span> <span class="n">select</span><span class="p">([[</span><span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="n">L</span><span class="p">]])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Pour finir, nous allons déterminer comment la longueur de corrélation varie à l'approche de la transition. On attend un exposant critique :
+$$\xi\sim |J-J_c|^{-\nu}.$$ 
+On suppose alors que le cumulant de Binder ne dépend du couplage que via le ratio $L/\xi\sim \left(L^{1/\nu}|J-J_c|\right)^{\nu}$. Tracez le cumulant de Binder en fonction de $L^{1/\nu}(J-J_c)$ en testant différentes valeurs de l'exposant $\nu$ ; la valeur de $\nu$ pour laquelle toutes les courbes se superposent correspond à la valeur de l'exposant critique !</p>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="footer" class="body">
+                Généré par <a href="http://getpelican.com/">Pelican</a>, un générateur de sites statiques en <a href="http://python.org">Python</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

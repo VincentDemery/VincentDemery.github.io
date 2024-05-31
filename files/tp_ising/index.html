@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<head>
+        <meta charset="utf-8" />
+        <title>Introduction</title>
+        <link rel="stylesheet" href="./theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="./">TP optionnel de PSA : Modèle d'Ising </a></h1>
+                <nav><ul>
+                    <li class="active"><a href="./index.html">Introduction</a></li>
+                    <li><a href="./pages/exercice.html">Exercice</a></li>
+                    <li><a href="./pages/a-propos.html">À propos</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+    <h1 class="entry-title">Introduction</h1>
+    
+    <p>Le modèle d'Ising est un modèle jouet de milieu ferromagnétique. Introduit par Lenz et Ising en 1920, il a été résolu par Onsager en 1944 en dimension 2, qui a montré qu'il présentait une transition de phase du 2ème ordre entre une phase paramagnétique à faible couplage (ou grande température) et une phase ferromagnétique à grand couplage (ou basse température). Dans ce TP, vous utilisez des simulations numériques pour mettre en évidence et comprendre cette transition de phase.</p>
+<h1>Outils utilisés</h1>
+<h2>Simulations avec une dynamique de Glauber</h2>
+<p>Le code de simulation que vous allez utiliser implémente une dynamique de Glauber, qui est proche de la dynamique de Métropolis vue en cours d'informatique. Il est écrit en <a href="https://julialang.org/">Julia</a>, un langage à la syntaxe proche de Python mais qui est précompilé, ce qui lui permet d'être beaucoup plus rapide. Vous pouvez regarder rapidement le code pour avoir une idée de la syntaxe.</p>
+<p>Les fichiers de résultats sont au format <a href="https://www.hdfgroup.org/solutions/hdf5/">HDF5</a>, ce qui leur permet de contenir plusieurs types de données et les paramètres des simulations.</p>
+<p>Il simule le modèle d'Ising en deux dimensions sur un réseau carré sur un système de taille $L$ avec conditions aux limites périodiques. La température est fixée à $T=1$ et le paramètre de contrôle est la constante de couplage $J$ entre les différents spins.</p>
+<h2>Ligne de commande</h2>
+<p>Pour lancer le programme, vous utiliserez comme pour le TP de tronc commun le terminal et son interpréteur, <a href="http://fr.wikipedia.org/wiki/Bourne-Again_shell">Bash</a>. En revanche, la gestion des résultats sera plus simple car tous les fichiers de sortie se retrouveront dans le même dossier <code>results</code>.</p>
+<h2>Analyse de données avec Jupyter</h2>
+<p>Pour traiter les données exportées par le programme, vous utiliserez <a href="https://www.python.org/">Python</a> dans l'interface <a href="https://jupyter.org/">Jupyter</a>. Vous utiliserez les modèles <a href="http://www.numpy.org/">Numpy</a> et <a href="http://matplotlib.org/">Matplotlib</a> qui vous sont familiers.</p>
+<p>Vous utiliserez aussi, de façon très guidée, les modules <a href="https://docs.h5py.org/en/stable/">H5Py</a>, qui permet d'ouvrir les fichiers HDF5 et <a href="https://pandas.pydata.org/">Pandas</a>, qui permet d'organiser les résultats dans une base de données. Ces modules sont utilisés par les fonctions déjà présentes dans le Notebook que vous allez télécharger.</p>
+</section>
+        <section id="extras" class="body">
+        </section><!-- /#extras -->
+
+        <footer id="footer" class="body">
+                Généré par <a href="http://getpelican.com/">Pelican</a>, un générateur de sites statiques en <a href="http://python.org">Python</a>.
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

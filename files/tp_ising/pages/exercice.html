@@ -57,7 +57,7 @@ MathJax = {
 <div class="highlight"><pre><span></span><code>julia ising.jl
 </code></pre></div>
 
-<p>Les paramètres utilisez sont affichés. La simulation devrait être assez rapide ; le fichier de résultats est placé dans le dossier <code>results</code>.</p>
+<p>Les paramètres utilisés sont affichés. La simulation devrait être assez rapide ; le fichier de résultats est placé dans le dossier <code>results</code>.</p>
 <h2>Récupération et affichage des résultats dans le notebook Jupyter</h2>
 <p>Lancez Jupyter dans votre répertoire de travail avec les commandes </p>
 <div class="highlight"><pre><span></span><code>conda activate psa
@@ -137,7 +137,7 @@ jlab
 <p>La meilleure méthode pour localiser la transition de phase est d'utiliser le cumulant de Binder 
 $$B= \frac{3}{2}\left(1-\frac{\left\langle m^4\right\rangle}{3\left\langle m^2\right\rangle^2}\right).$$
 Il vaut 0 quand la distribution est gaussienne et $1$ quand elle est piquée sur $\pm m_0$.</p>
-<p>Calculez le cumulant de Binder et tracez-le en fonction du couplage pour les trois tailles de système. La transition de phase est donnée par l'intersection des trois courbes. Pour la déterminer précisément le couplage critique $J_c$, il faut afficher les lignes des courbes, ce qui requiert de trier les points par valeur du couplage, ce qui peut être fait avec la commande </p>
+<p>Calculez le cumulant de Binder et tracez-le en fonction du couplage pour les trois tailles de système. La transition de phase est donnée par l'intersection des trois courbes. Pour déterminer précisément le couplage critique $J_c$, il faut afficher les lignes des courbes, ce qui requiert de trier les points par valeur du couplage, ce qui peut être fait avec la commande </p>
 <div class="highlight"><pre><span></span><code><span class="n">sel</span> <span class="o">=</span> <span class="n">select</span><span class="p">([[</span><span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="n">L</span><span class="p">]])</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;J&#39;</span><span class="p">)</span>
 </code></pre></div>
 
